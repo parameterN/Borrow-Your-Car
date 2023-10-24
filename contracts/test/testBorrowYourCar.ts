@@ -11,7 +11,7 @@ describe("Test", function () {
     const [owner, otherAccount] = await ethers.getSigners();
 
     const BorrowYourCar = await ethers.getContractFactory("BorrowYourCar");
-    const borrowYourCar = await BorrowYourCar.deploy("ZJUcar", "cars");
+    const borrowYourCar = await BorrowYourCar.deploy();
 
     return { borrowYourCar, owner, otherAccount };
   }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+pragma solidity  ^0.8.20;
 
 // Uncomment the line to use openzeppelin/ERC721
 // You can use this dependency directly because it has been installed by TA already
@@ -24,28 +24,28 @@ contract BorrowYourCar is ERC721{
 
     uint256 private nextTokenId;
     uint256 public airdropNumber;
-    uint256 public coinPerSecond;
+    uint256 public coinPerHour;
     MyERC20 public myERC20; // 彩票相关的代币合约
 
-    constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
+    constructor() ERC721("BorrowYourCar", "cars") {
         // ERC721.tokenURI
         nextTokenId = 0;
         airdropNumber = 3;
-        coinPerSecond = 1;
-        myERC20 = new MyERC20("MyToken", "$");
+        coinPerHour = 1;
+        myERC20 = new MyERC20();
     }
 
     function helloworld() pure external returns(string memory) {
         return "hello world";
     }
 
-    function Borrow(uint256 tokenId, uint256 expires) public virtual{
+    function Borrow(uint256 tokenId, uint256 hour) public virtual{
         address owner = _ownerOf(tokenId);
         require(owner != address(0), "BorrowYourCar: none existent Token");
         // require(_isAuthorized(owner, msg.sender, tokenId), "BorrowYourCar: operation caller is not owner nor approved");
         require(borrowerOf(tokenId) == address(0), "BorrowYourCar: car has already been borrowed");
-        require(expires > block.timestamp, "BorrowYourCar: meaningless expire time");
-        myERC20.transferFrom(msg.sender, owner, (expires - block.timestamp) * coinPerSecond);
+        uint256 expires = block.timestamp + hour * 3600; 
+        myERC20.transferFrom(msg.sender, owner, hour * coinPerHour);
         Car storage car =  cars[tokenId];
         car.borrower = msg.sender;
         car.expires = expires;
@@ -79,7 +79,7 @@ contract BorrowYourCar is ERC721{
 
     function airdrop() external {
         require(claimedAirdropList[msg.sender] == false, "BorrowYourCar: user has claimed airdrop already");
-        for (uint i = 0; i < airdropNumber; i++) {
+        for (uint256 i = 0; i < airdropNumber; i++) {
             _safeMint(msg.sender, nextTokenId);
             nextTokenId += 1;
         }
