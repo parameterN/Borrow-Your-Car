@@ -90,11 +90,7 @@ const BorrowYourCarPage = () => {
 
         if (MyERC20Contract) {
             try {
-                await MyERC20Contract.methods.airdropToken().send({
-                    from: account,
-                    gas: 3000000,
-                    gasPrice: 20000000000,
-                })
+                await MyERC20Contract.methods.airdropToken().send({from: account})
 
                 alert('You have claimed ZJU Token.')
             } catch (error: any) {
@@ -114,11 +110,7 @@ const BorrowYourCarPage = () => {
 
         if (BorrowYourCarContract) {
             try {
-                await BorrowYourCarContract.methods.airdrop().send({
-                    from: account,
-                    gas: 3000000,
-                    gasPrice: 20000000000,
-                })
+                await BorrowYourCarContract.methods.airdrop().send({from: account})
                 alert('You have claimed the cars.')
             } catch (error: any) {
                 alert(error.message)
@@ -151,16 +143,8 @@ const BorrowYourCarPage = () => {
 
         if (BorrowYourCarContract && MyERC20Contract) {
             try {
-                await MyERC20Contract.methods.approve(BorrowYourCarContract.options.address, hours * coinPerHour).send({
-                    from: account,
-                    gas: 3000000,
-                    gasPrice: 20000000000,
-                })
-                await BorrowYourCarContract.methods.Borrow(carId, hours).send({
-                    from: account,
-                    gas: 3000000,
-                    gasPrice: 20000000000,
-                })
+                await MyERC20Contract.methods.approve(BorrowYourCarContract.options.address, hours * coinPerHour).send({from: account})
+                await BorrowYourCarContract.methods.Borrow(carId, hours).send({from: account})
                 alert('You have borrowed the cars.')
             } catch (error: any) {
                 alert(error.message)
@@ -183,11 +167,7 @@ const BorrowYourCarPage = () => {
 
         if (BorrowYourCarContract) {
             try {
-                await BorrowYourCarContract.methods.cancelBorrow(carId).send({
-                    from: account,
-                    gas: 3000000,
-                    gasPrice: 20000000000,
-                })
+                await BorrowYourCarContract.methods.cancelBorrow(carId).send({from: account})
                 alert('Successfully returned.')
             } catch (error: any) {
                 alert(error.message)
@@ -313,8 +293,8 @@ const BorrowYourCarPage = () => {
                 <h1>Borrow Your Car </h1>
                 <Button onClick={onClaimTokenAirdrop}>领取积分空投</Button>
                 <Button style={{marginLeft: "20px"}} onClick={onClaimCarAirdrop}>领取汽车空投</Button>
+                <div>{account === '' && <Button style={{marginTop: "10px"}} onClick={onClickConnectWallet}>连接钱包</Button>}</div>    
                 <div className='account' style={{margin: "10px", textAlign:"left", marginLeft: "35%"}}>
-                    {account === '' && <Button onClick={onClickConnectWallet}>连接钱包</Button>}
                     <li>当前用户：{account === '' ? '无用户连接' : account}</li>
                     <li>当前用户拥有积分数量：{balance} Tokens</li>
                     <li>当前用户拥有汽车数量：{carNumber}</li>
