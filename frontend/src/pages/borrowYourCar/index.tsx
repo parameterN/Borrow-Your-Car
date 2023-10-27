@@ -316,8 +316,8 @@ const BorrowYourCarPage = () => {
                     {activeTab === 2 && <div className='buttons' style={{display: 'inline-block'}}>
                         <Button style={{width: '200px', marginRight: "10px"}} onClick={()=>onClickBorrow(chosen, borrowHour)}>借车</Button>
                         借车时间（{coinPerHour} Tokens/小时）:
-                        <input type='number' style={{margin: "0 10px"}} value={borrowHour} onChange={(e)=>setBorrowHour(e.target.valueAsNumber)}></input></div>}
-                        小时
+                        <input type='number' style={{margin: "0 10px"}} value={borrowHour} onChange={(e)=>setBorrowHour(e.target.valueAsNumber)}></input>
+                        小时</div>}
             </div>
         </div>
     )
